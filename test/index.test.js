@@ -1,3 +1,4 @@
+'use strict';
 
 var Analytics = require('analytics.js-core').constructor;
 var integration = require('analytics.js-integration');
@@ -128,21 +129,27 @@ describe('Blueshift', function() {
 
       it('should send an event', function() {
         analytics.track('event');
-        var properties = {
+        analytics.called(window.blueshift.track, 'event', {
           _bsft_source: 'segment.com',
           anonymousId: analytics.user().anonymousId()
-        };
-        analytics.called(window.blueshift.track, 'event', properties);
+        });
       });
-
       it('should send an event with properties', function() {
         analytics.track('event', { property: true });
-        var properties = {
+        analytics.called(window.blueshift.track, 'event', {
           _bsft_source: 'segment.com',
           anonymousId: analytics.user().anonymousId(),
           property: true
-        };
-        analytics.called(window.blueshift.track, 'event', properties);
+        });
+      });
+      it('should send an event with customer_id', function() {
+        analytics.identify('123');
+        analytics.track('event');
+        analytics.called(window.blueshift.track, 'event', {
+          _bsft_source: 'segment.com',
+          customer_id: '123',
+          anonymousId: analytics.user().anonymousId()
+        });
       });
     });
 
