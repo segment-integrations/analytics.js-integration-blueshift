@@ -113,9 +113,11 @@ describe('Blueshift', function() {
       });
 
       it('should send traits', function() {
-        analytics.identify({ trait: true });
+        analytics.identify({ trait: true, firstName: 'ham', lastName: 'solo' });
         analytics.called(window.blueshift.identify, {
           trait: true,
+          firstname: 'ham',
+          lastname: 'solo',
           _bsft_source: 'segment.com',
           anonymousId: analytics.user().anonymousId()
         });
